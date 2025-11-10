@@ -15,7 +15,7 @@ jobs:
       - name: Upload to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.kayacuneyt.com
+          server: 185.224.137.82
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/turkishvisaregime/
