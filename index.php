@@ -29,6 +29,7 @@ $data = file_get_contents(__DIR__ . '/data/data.json');
             <div class="inline-flex rounded-full border border-white/10 bg-slate-900/40 p-1">
               <button type="button" data-lang="en" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors text-slate-300 hover:text-white">EN</button>
               <button type="button" data-lang="tr" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors text-slate-300 hover:text-white">TR</button>
+              <button type="button" data-lang="de" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors text-slate-300 hover:text-white">DE</button>
             </div>
           </div>
         </header>

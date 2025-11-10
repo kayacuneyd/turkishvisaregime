@@ -55,6 +55,32 @@ const translations = {
       copyFailed: 'Kopyalanamadı. Lütfen bağlantıyı elle kopyalayın.'
     }
   }
+  ,
+  de: {
+    heading: 'Türkei Visa Checker',
+    subheading: 'Wählen Sie Ihr Land, um Visabestimmungen, e‑Visa‑Optionen und Aufenthaltsdauer zu sehen.',
+    searchPlaceholder: 'Wählen Sie Ihr Land',
+    lastUpdated: 'Zuletzt aktualisiert',
+    duration: 'Aufenthaltsdauer',
+    source: 'Quelle',
+    visaTypes: {
+      no_visa: 'Kein Visum erforderlich',
+      e_visa: 'e‑Visum verfügbar',
+      consular: 'Visum erforderlich'
+    },
+    labels: {
+      language: 'Sprache',
+      share: 'Teilen',
+      copyLink: 'Link kopieren',
+      whatsapp: 'Auf WhatsApp teilen',
+      notFound: 'Für dieses Land liegen noch keine Visa‑Informationen vor.',
+      selectPrompt: 'Geben Sie den Ländernamen ein, um zu suchen...'
+    },
+    alerts: {
+      copied: 'Teilen‑Link in die Zwischenablage kopiert.',
+      copyFailed: 'Kopieren nicht möglich. Bitte kopieren Sie den Link manuell.'
+    }
+  }
 };
 
 const badgeClassMap = {
@@ -75,16 +101,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function initLanguage() {
   const saved = localStorage.getItem('visa_app_lang');
   const paramLang = new URLSearchParams(window.location.search).get('lang');
-  state.lang = ['en', 'tr'].includes(paramLang) ? paramLang : (saved || 'en');
+  state.lang = ['en', 'tr', 'de'].includes(paramLang) ? paramLang : (saved || 'en');
   updateLanguageToggle();
   renderTranslations();
 }
 
 function updateLanguageToggle() {
-  const btnEn = document.querySelector('[data-lang="en"]');
-  const btnTr = document.querySelector('[data-lang="tr"]');
-  if (!btnEn || !btnTr) return;
-  [btnEn, btnTr].forEach(btn => {
+  const langBtns = document.querySelectorAll('[data-lang]');
+  if (!langBtns) return;
+  langBtns.forEach(btn => {
     btn.classList.toggle('bg-slate-900/80', btn.dataset.lang === state.lang);
     btn.classList.toggle('text-white', btn.dataset.lang === state.lang);
     btn.classList.toggle('bg-transparent', btn.dataset.lang !== state.lang);
@@ -300,7 +325,7 @@ function handleQueryParams() {
   const params = new URLSearchParams(window.location.search);
   const countryParam = params.get('country');
   const langParam = params.get('lang');
-  if (langParam && ['en', 'tr'].includes(langParam) && langParam !== state.lang) {
+  if (langParam && ['en', 'tr', 'de'].includes(langParam) && langParam !== state.lang) {
     state.lang = langParam;
     updateLanguageToggle();
     renderTranslations();
