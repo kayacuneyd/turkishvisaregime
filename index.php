@@ -88,10 +88,15 @@ $data = file_get_contents(__DIR__ . '/data/data.json');
       </div>
     </main>
 
+    <footer class="relative px-4 sm:px-6 lg:px-8 py-8 border-t border-white/5">
+      <div class="mx-auto max-w-5xl text-center text-sm text-slate-400">
+        <p>Developed by <a href="https://kayacuneyt.com" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 transition">Cüneyt Kaya</a></p>
+      </div>
+    </footer>
+
     <script>
       window.__VISA_DATA__ = <?php echo $data ?: '[]'; ?>;
     </script>
     <script src="assets/js/app.js" defer></script>
   </body>
 </html>
-
