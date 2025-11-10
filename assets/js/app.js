@@ -90,6 +90,7 @@ const badgeClassMap = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('🔧 Visa App initialized');
   initLanguage();
   loadCountries().then(() => {
     populateDatalist();
@@ -102,13 +103,14 @@ function initLanguage() {
   const saved = localStorage.getItem('visa_app_lang');
   const paramLang = new URLSearchParams(window.location.search).get('lang');
   state.lang = ['en', 'tr', 'de'].includes(paramLang) ? paramLang : (saved || 'en');
+  console.log('💬 Language set to:', state.lang);
   updateLanguageToggle();
   renderTranslations();
 }
 
 function updateLanguageToggle() {
   const langBtns = document.querySelectorAll('[data-lang]');
-  if (!langBtns) return;
+  if (!langBtns || langBtns.length === 0) return;
   langBtns.forEach(btn => {
     btn.classList.toggle('bg-slate-900/80', btn.dataset.lang === state.lang);
     btn.classList.toggle('text-white', btn.dataset.lang === state.lang);
@@ -184,7 +186,11 @@ function attachEventListeners() {
   langButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const newLang = btn.dataset.lang;
-      if (newLang === state.lang) return;
+      console.log('🔘 Lang button clicked:', newLang);
+      if (newLang === state.lang) {
+        console.log('⚠️ Same language, skipping');
+        return;
+      }
       state.lang = newLang;
       localStorage.setItem('visa_app_lang', newLang);
       updateLanguageToggle();
@@ -217,14 +223,17 @@ function attachEventListeners() {
 
 function selectCountry(query) {
   if (!query) return;
+  console.log('🔍 Searching for country:', query);
   const match = state.countries.find(item => item.country.toLowerCase() === query.toLowerCase());
   if (!match) {
+    console.log('❌ Country not found');
     showFeedback(translations[state.lang].labels.notFound, 'warning');
     state.filteredCountry = null;
     renderResult(null);
     updateUrl();
     return;
   }
+  console.log('✅ Country found:', match.country);
   state.filteredCountry = match;
   renderResult(match);
   updateUrl(match.country);
@@ -243,8 +252,8 @@ function renderResult(country) {
 
   const visaKey = country.visa_type;
   const t = translations[state.lang];
-  const description = country.descriptions?.[state.lang] || country.descriptions?.en || '';
-  const duration = country.durations?.[state.lang] || country.durations?.en || '';
+  const description = (country.descriptions && country.descriptions[state.lang]) || (country.descriptions && country.descriptions.en) || '';
+  const duration = (country.durations && country.durations[state.lang]) || (country.durations && country.durations.en) || '';
 
   placeholder.classList.add('hidden');
   container.innerHTML = `

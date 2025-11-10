@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Almanca Dil Test</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #1e293b; color: #f1f5f9; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #64748b; border-radius: 4px; }
+        .pass { background: #22c55e; }
+        .fail { background: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>🇩🇪 Almanca Dil Desteği Test</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+
+        function test(name, passed, message = '') {
+            const div = document.createElement('div');
+            div.className = 'test ' + (passed ? 'pass' : 'fail');
+            div.textContent = (passed ? '✅' : '❌') + ' ' + name + (message ? ': ' + message : '');
+            results.appendChild(div);
+        }
+
+        // Load data.json
+        fetch('/data/data.json')
+            .then(r => r.json())
+            .then(data => {
+                test('data.json loaded', data.length > 0, data.length + ' countries');
+
+                // Find Afghanistan
+                const afghanistan = data.find(c => c.country === 'Afghanistan');
+                test('Afghanistan found', !!afghanistan);
+
+                if (afghanistan) {
+                    test('Afghanistan has en description', !!afghanistan.descriptions?.en);
+                    test('Afghanistan has tr description', !!afghanistan.descriptions?.tr);
+                    test('Afghanistan has de description', !!afghanistan.descriptions?.de);
+                    
+                    test('Afghanistan has en duration', !!afghanistan.durations?.en);
+                    test('Afghanistan has tr duration', !!afghanistan.durations?.tr);
+                    test('Afghanistan has de duration', !!afghanistan.durations?.de);
+                }
+
+                // Find Germany
+                const germany = data.find(c => c.country === 'Germany');
+                test('Germany found', !!germany);
+                if (germany) {
+                    test('Germany has de description', !!germany.descriptions?.de, 
+                        (germany.descriptions?.de || '').substring(0, 50) + '...');
+                }
+            })
+            .catch(e => test('data.json fetch', false, e.message));
+
+        // Check translations object
+        setTimeout(() => {
+            if (typeof translations !== 'undefined') {
+                test('translations object exists', true);
+                test('en language available', !!translations.en);
+                test('tr language available', !!translations.tr);
+                test('de language available', !!translations.de);
+
+                if (translations.de) {
+                    test('de.heading', !!translations.de.heading, translations.de.heading);
+                    test('de.visaTypes.no_visa', !!translations.de.visaTypes?.no_visa);
+                }
+            } else {
+                test('translations object', false, 'not found');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
