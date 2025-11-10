@@ -18,5 +18,4 @@ jobs:
           server: 185.224.137.82
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /turkishvisaregime/
           port: 21
